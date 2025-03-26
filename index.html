@@ -1,220 +1,159 @@
 <!DOCTYPE html>
-<html lang="zh">
+<html lang="zh" class="dark">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>3D模型展示</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script>
-      tailwind.config = {
-        darkMode: 'class'
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>3D模型展示 - 模块化示例</title>
+  <!-- 引入Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;700&family=Montserrat:wght@500;700&display=swap" rel="stylesheet">
+  <!-- 引入Font Awesome图标 -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <!-- 引入Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Inter', 'sans-serif'],
+            display: ['Montserrat', 'sans-serif'],
+          }
+        }
       }
-    </script>
+    }
+  </script>
+  <!-- 引入自定义样式 -->
+  <link rel="stylesheet" href="js/styles.css">
 </head>
-<body class="m-0 overflow-hidden bg-white text-gray-800 transition-colors duration-500 ease-in-out dark:bg-black">
-    <div id="container" class="absolute inset-0">
-        <div id="model-container" class="absolute top-0 left-0 w-full h-[50vh] z-10"></div>
-        <div id="model-title" class="absolute top-2.5 left-0 w-full text-center text-2xl font-bold z-30 opacity-0 -translate-y-5 transition-all duration-500 ease-in-out dark:text-white">ChatGPT</div>
-        <button id="prev-button" class="absolute top-[calc(50vh-25px)] left-5 z-30 bg-white/70 w-12 h-12 rounded-full text-xl cursor-pointer transition-all duration-300 ease-in-out flex justify-center items-center shadow-md dark:bg-gray-800/70 dark:text-white hover:bg-white/90 hover:scale-110 dark:hover:bg-gray-600/90">←</button>
-        <button id="next-button" class="absolute top-[calc(50vh-25px)] right-5 z-30 bg-white/70 w-12 h-12 rounded-full text-xl cursor-pointer transition-all duration-300 ease-in-out flex justify-center items-center shadow-md dark:bg-gray-800/70 dark:text-white hover:bg-white/90 hover:scale-110 dark:hover:bg-gray-600/90">→</button>
-        <button id="night-mode-button" class="absolute top-5 right-5 z-30 bg-white/70 w-10 h-10 rounded-full text-xl cursor-pointer transition-all duration-300 ease-in-out flex justify-center items-center shadow-md dark:bg-gray-800/70 dark:text-white hover:bg-white/90 hover:scale-110 dark:hover:bg-gray-600/90">🌙</button>
-        <div id="content" class="absolute top-[50vh] left-0 w-full h-[50vh] flex flex-col justify-center items-center z-20 p-5">
-            <h1 class="mb-5 text-2xl font-bold transition-colors duration-500 ease-in-out dark:text-white">欢迎来到我的网站</h1>
-            <p class="max-w-xl text-center transition-colors duration-500 ease-in-out dark:text-gray-300">这是一个展示3D模型的简单网页。上方的装饰是通过Three.js加载的GLTF格式3D模型，它会自动旋转。</p>
-        </div>
-       
-    </div>
+<body class="m-0 overflow-hidden bg-white text-gray-800 transition-colors duration-500 ease-in-out dark:bg-black font-sans">
 
-    <!-- 引入Three.js库和GLTF加载器 -->
-    <script src="https://cdn.jsdelivr.net/npm/three@0.132.2/build/three.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/three@0.132.2/examples/js/loaders/GLTFLoader.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/three@0.132.2/examples/js/controls/OrbitControls.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/three@0.132.2/examples/js/utils/SkeletonUtils.js"></script>
+  <!-- 页面结构 -->
+  <div id="container" class="absolute inset-0">
+    <!-- 模型容器 - 黄金分割比例：上部分占61.8% -->
+    <div id="model-container" class="absolute top-0 left-0 w-full h-[var(--upper-section)] z-10 bg-gray-100 border-b border-gray-300 dark:bg-transparent dark:border-none"></div>
     
-    <script>
-        const modelCacheMap = {};
-        // 模型列表和当前索引
-        const models = [
-            { name: "ChatGPT", file: "gemini.glb" },
-            { name: "Claude", file: "claude.gltf" },
-            { name: "DeepSeek", file: "deepseek.gltf" },
-            { name: "Grok", file: "grok.gltf" }
-        ];
-        let currentModelIndex = 2; // 默认显示DeepSeek
-        let currentModel = null;
-        
-        // 初始化场景、相机和渲染器
-        const scene = new THREE.Scene();
-        scene.background = new THREE.Color(0xffffff);
-        
-        const camera = new THREE.PerspectiveCamera(75, window.innerWidth / (window.innerHeight * 0.5), 0.1, 1000);
-        camera.position.z = 5;
-        
-        const renderer = new THREE.WebGLRenderer({ 
-            antialias: true,
-            physicallyCorrectLights: true
-        });
-        renderer.outputEncoding = THREE.sRGBEncoding;
-        renderer.toneMapping = THREE.ACESFilmicToneMapping;
-        renderer.toneMappingExposure = 1.0;
-        renderer.setSize(window.innerWidth, window.innerHeight * 0.5);
-        renderer.setPixelRatio(window.devicePixelRatio);
-        document.getElementById('model-container').appendChild(renderer.domElement);
-        
-        // 添加光源
-        const ambientLight = new THREE.AmbientLight(0xffffff, 1.0);
-        scene.add(ambientLight);
-        
-        const directionalLight = new THREE.DirectionalLight(0xffffff, 2.0);
-        directionalLight.position.set(1, 1, 1);
-        directionalLight.castShadow = true;
-        scene.add(directionalLight);
-        
-        const pointLight1 = new THREE.PointLight(0xffffff, 1.5, 10);
-        pointLight1.position.set(2, 2, 2);
-        scene.add(pointLight1);
-        
-        const pointLight2 = new THREE.PointLight(0xffffff, 1.5, 10);
-        pointLight2.position.set(-2, -2, 2);
-        scene.add(pointLight2);
-        
-        // 添加控制器
-        const controls = new THREE.OrbitControls(camera, renderer.domElement);
-        controls.enableDamping = true;
-        controls.dampingFactor = 0.05;
-        
-        // 加载GLTF模型
-        const loader = new THREE.GLTFLoader();
-        
-        // 加载模型函数
-        function loadModel(index) {
-            const modelInfo = models[index];
-            document.getElementById('model-title').textContent = modelInfo.name;
-            
-            // 显示模型名称动画
-            const titleElement = document.getElementById('model-title');
-            titleElement.classList.remove('active');
-            setTimeout(() => {
-                titleElement.classList.add('active');
-            }, 50);
-            
-            if (currentModel) {
-                scene.remove(currentModel);
-            }
-            
-            if (modelCacheMap[modelInfo.file]) {
-                const cached = modelCacheMap[modelInfo.file];
-                const clone = THREE.SkeletonUtils ? THREE.SkeletonUtils.clone(cached) : cached.clone();
-                scene.add(clone);
-                currentModel = clone;
-                currentModelIndex = index;
-                return;
-            }
-            
-            loader.load(
-                modelInfo.file,
-                function (gltf) {
-                    const newModel = gltf.scene;
-                    modelCacheMap[modelInfo.file] = newModel;
-                    
-                    // 遍历模型材质，增强塑料材质效果
-                    newModel.traverse((node) => {
-                        if (node.isMesh) {
-                            if (node.material) {
-                                node.material.metalness = 0.1;
-                                node.material.roughness = 0.5;
-                                node.material.envMapIntensity = 1.0;
-                                
-                                if (node.material.normalMap) {
-                                    node.material.normalScale.set(1, 1);
-                                }
-                            }
-                        }
-                    });
-                    
-                    // 自动调整模型大小和位置
-                    const box = new THREE.Box3().setFromObject(newModel);
-                    const center = box.getCenter(new THREE.Vector3());
-                    const size = box.getSize(new THREE.Vector3());
-                    
-                    newModel.position.x += (newModel.position.x - center.x);
-                    newModel.position.y += (newModel.position.y - center.y);
-                    newModel.position.z += (newModel.position.z - center.z);
-                    
-                    const maxDim = Math.max(size.x, size.y, size.z);
-                    const scale = 3.0 / maxDim;
-                    newModel.scale.set(scale, scale, scale);
-                    
-                    newModel.rotation.y = -0.5;
-                    
-                    scene.add(newModel);
-                    currentModel = newModel;
-                    currentModelIndex = index;
-                },
-                undefined,
-                function (error) {
-                    console.error('加载模型出错:', error);
-                }
-            );
-        }
-        
-        // 初始加载
-        loadModel(currentModelIndex);
-        
-        // 导航按钮事件
-        document.getElementById('prev-button').addEventListener('click', () => {
-            const newIndex = (currentModelIndex - 1 + models.length) % models.length;
-            loadModel(newIndex);
-        });
-        
-        document.getElementById('next-button').addEventListener('click', () => {
-            const newIndex = (currentModelIndex + 1) % models.length;
-            loadModel(newIndex);
-        });
-        
-        // 夜间模式切换
-        const nightModeButton = document.getElementById('night-mode-button');
-        nightModeButton.addEventListener('click', () => {
-            document.documentElement.classList.toggle('dark');
-            
-            // 切换场景背景色
-            if (document.documentElement.classList.contains('dark')) {
-                scene.background = new THREE.Color(0x000000);
-                nightModeButton.textContent = "☀️";
-            } else {
-                scene.background = new THREE.Color(0xffffff);
-                nightModeButton.textContent = "🌙";
-            }
-        });
-        
-        // 窗口大小调整处理
-        window.addEventListener('resize', function() {
-            camera.aspect = window.innerWidth / (window.innerHeight * 0.5);
-            camera.updateProjectionMatrix();
-            renderer.setSize(window.innerWidth, window.innerHeight * 0.5);
-        });
-        
-        // 动画循环
-        let lastTime = 0;
-        const rotationSpeed = (2 * Math.PI) / 40; // 40秒完成一圈 (2π弧度)
-        
-        function animate(currentTime) {
-            requestAnimationFrame(animate);
-            
-            // 计算时间增量
-            if (!lastTime) lastTime = currentTime;
-            const deltaTime = (currentTime - lastTime) / 1000; // 转换为秒
-            lastTime = currentTime;
-            
-            // 自动旋转模型
-            if (currentModel) {
-                currentModel.rotation.y += rotationSpeed * deltaTime;
-            }
-            
-            controls.update();
-            renderer.render(scene, camera);
-        }
-        animate();
-    </script>
+    <!-- 模型标题 -->
+    <div id="model-title"
+         class="absolute top-2.5 left-0 w-full text-center text-3xl font-bold z-30 dark:text-white font-display"
+    >ChatGPT</div>
+    
+    <!-- 模型版本 -->
+    <div id="model-version"
+         class="hidden"
+    ><span class="px-2 py-1 bg-blue-500/20 dark:bg-blue-500/30 rounded-full text-blue-600 dark:text-blue-300"></span></div>
+    
+    <!-- 翻页按钮 - 位于分界线处 -->
+    <button id="prev-button"
+            class="shadow-md dark:text-white"
+    ><i class="fas fa-angle-left text-xl"></i></button>
+    
+    <button id="next-button"
+            class="shadow-md dark:text-white"
+    ><i class="fas fa-angle-right text-xl"></i></button>
+    
+    <!-- 夜间模式按钮 -->
+    <button id="night-mode-button"
+            class="absolute top-5 right-5 z-30 bg-white/70 w-10 h-10 rounded-full
+                   cursor-pointer transition-all duration-300 ease-in-out flex justify-center items-center
+                   shadow-md dark:bg-gray-800/70 dark:text-white hover:bg-white/90 dark:hover:bg-gray-600/90"
+    ><i class="fas fa-sun"></i></button>
+    
+    <!-- 文字内容区 - 黄金分割比例：下部分占38.2% -->
+    <div id="content" class="absolute top-[61.8vh] left-0 w-full h-[38.2vh] flex flex-col justify-center items-center z-20 p-5">
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-6xl w-full">
+        <div class="flex flex-col justify-center">
+          <div class="bg-gray-100 dark:bg-gray-800/30 p-6 rounded-xl backdrop-blur-sm border border-gray-300 dark:border-white/10 shadow-md">
+            <h1 class="mb-3 text-3xl font-bold transition-colors duration-500 ease-in-out dark:text-white font-display">
+              一句话介绍
+            </h1>
+            <p id="model-description" class="mb-4 text-lg transition-colors duration-500 ease-in-out dark:text-gray-300">
+              
+            </p>
+            <p class="text-sm text-gray-600 dark:text-gray-400">
+              通过点击上方的导航圆点或使用箭头按钮切换不同的大模型产品
+            </p>
+          </div>
+        </div>
+        <div class="flex flex-col justify-center">
+          <div class="bg-gray-100 dark:bg-gray-800/30 p-6 rounded-xl backdrop-blur-sm border border-gray-300 dark:border-white/10 shadow-md">
+            <h2 class="text-xl font-bold mb-4 dark:text-white font-display">当前模型</h2>
+            <ul class="space-y-3 relative min-h-[150px] flex items-center justify-center">
+              <li id="model-item-0" class="flex items-center text-gray-700 dark:text-gray-300 p-3 rounded-lg hover:bg-white/10 transition-all duration-300 absolute w-full active bg-white dark:bg-gray-700/50 shadow-sm border border-gray-200 dark:border-gray-600/30" style="opacity: 1; transform: translateY(-50%);">
+                <div class="w-10 h-10 flex items-center justify-center rounded-full bg-blue-500/20 mr-4">
+                  <i class="fas fa-robot text-blue-500 text-lg"></i>
+                </div>
+                <div>
+                  <div class="font-medium text-lg">ChatGPT</div>
+                  <div class="text-sm opacity-70">by OpenAI</div>
+                  <div class="text-sm text-blue-500 mt-2">GPT4.5/o1/Deep Research</div>
+                </div>
+              </li>
+              <li id="model-item-1" class="flex items-center text-gray-700 dark:text-gray-300 p-3 rounded-lg hover:bg-white/10 transition-all duration-300 absolute w-full opacity-0 bg-white dark:bg-gray-700/50 shadow-sm border border-gray-200 dark:border-gray-600/30">
+                <div class="w-10 h-10 flex items-center justify-center rounded-full bg-purple-500/20 mr-4">
+                  <i class="fas fa-robot text-purple-500 text-lg"></i>
+                </div>
+                <div>
+                  <div class="font-medium text-lg">Claude</div>
+                  <div class="text-sm opacity-70">by Anthropic</div>
+                  <div class="text-sm text-purple-500 mt-2">Sonnet 3.7 thinking</div>
+                </div>
+              </li>
+              <li id="model-item-2" class="flex items-center text-gray-700 dark:text-gray-300 p-3 rounded-lg hover:bg-white/10 transition-all duration-300 absolute w-full opacity-0 bg-white dark:bg-gray-700/50 shadow-sm border border-gray-200 dark:border-gray-600/30">
+                <div class="w-10 h-10 flex items-center justify-center rounded-full bg-green-500/20 mr-4">
+                  <i class="fas fa-robot text-green-500 text-lg"></i>
+                </div>
+                <div>
+                  <div class="font-medium text-lg">DeepSeek</div>
+                  <div class="text-sm opacity-70">by DeepSeek AI</div>
+                  <div class="text-sm text-green-500 mt-2">DeepSeek R1/V3</div>
+                </div>
+              </li>
+              <li id="model-item-3" class="flex items-center text-gray-700 dark:text-gray-300 p-3 rounded-lg hover:bg-white/10 transition-all duration-300 absolute w-full opacity-0 bg-white dark:bg-gray-700/50 shadow-sm border border-gray-200 dark:border-gray-600/30">
+                <div class="w-10 h-10 flex items-center justify-center rounded-full bg-amber-500/20 mr-4">
+                  <i class="fas fa-robot text-amber-500 text-lg"></i>
+                </div>
+                <div>
+                  <div class="font-medium text-lg">Gemini</div>
+                  <div class="text-sm opacity-70">by Google</div>
+                  <div class="text-sm text-amber-500 mt-2">Gemini 2 flash exp/2.5 pro</div>
+                </div>
+              </li>
+              <li id="model-item-4" class="flex items-center text-gray-700 dark:text-gray-300 p-3 rounded-lg hover:bg-white/10 transition-all duration-300 absolute w-full opacity-0 bg-white dark:bg-gray-700/50 shadow-sm border border-gray-200 dark:border-gray-600/30">
+                <div class="w-10 h-10 flex items-center justify-center rounded-full bg-red-500/20 mr-4">
+                  <i class="fas fa-robot text-red-500 text-lg"></i>
+                </div>
+                <div>
+                  <div class="font-medium text-lg">Grok</div>
+                  <div class="text-sm opacity-70">by xAI</div>
+                  <div class="text-sm text-red-500 mt-2">grok 3</div>
+                </div>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 模型导航圆点 -->
+  <div id="model-dots">
+    <!-- 圆点将通过JavaScript动态生成 -->
+  </div>
+
+  <!-- 引入Three.js和附加库 -->
+  <script src="https://cdn.jsdelivr.net/npm/three@0.132.2/build/three.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/three@0.132.2/examples/js/loaders/GLTFLoader.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/three@0.132.2/examples/js/controls/OrbitControls.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/three@0.132.2/examples/js/utils/SkeletonUtils.js"></script>
+
+  <!-- 引入自定义JS模块 -->
+  <script src="js/config.js"></script>
+  <script src="js/scene.js"></script>
+  <script src="js/modelLoader.js"></script>
+  <script src="js/ui.js"></script>
+  <script src="js/main.js"></script>
 </body>
 </html>
