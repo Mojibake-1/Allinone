@@ -22,7 +22,7 @@ const config = {
     { 
       name: "Gemini", 
       file: "gemini.gltf",
-      description: "超长上下文沉浸式翻译，出图一致性强大，善于多模态分析和复杂信息整合",
+      description: "超长上下文沉浸式翻译，善于多模态分析和复杂信息整合",
       version: "Gemini 2 flash exp/2.5 pro"
     },
     { 
