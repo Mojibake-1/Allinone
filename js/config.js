@@ -4,9 +4,9 @@ const config = {
     { 
       name: "ChatGPT", 
       file: "chatgpt.gltf",
-      description: "情商在线、知识广博，是当下最像\"有见识的朋友\"的 AI",
+      description: "情商在线、知识广博，极大简化图像工作流",
       version: "GPT4.5/o1/deep research"
-    },
+    }, 
     { 
       name: "Claude", 
       file: "claude.gltf",
@@ -22,7 +22,7 @@ const config = {
     { 
       name: "Gemini", 
       file: "gemini.gltf",
-      description: "超长上下文沉浸式翻译，善于多模态分析和复杂信息整合",
+      description: "超长上下文，强推理能力，善于多模态分析和复杂信息整合",
       version: "Gemini 2 flash exp/2.5 pro"
     },
     { 
