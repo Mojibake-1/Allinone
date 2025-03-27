@@ -137,7 +137,7 @@ button {
   align-items: center;
   border-radius: 50%;
   background-color: rgba(255, 255, 255, 0.7);
-  transition: all 0.3s ease;
+  transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
   cursor: pointer;
 }
 
@@ -146,12 +146,18 @@ button {
 }
 
 #prev-button:hover, #next-button:hover {
-  transform: translateY(-50%) scale(1.1);
+  transform: translateY(-50%) scale(1.15);
   background-color: rgba(255, 255, 255, 0.9);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
 }
 
 .dark #prev-button:hover, .dark #next-button:hover {
   background-color: rgba(75, 75, 75, 0.9);
+}
+
+#prev-button:active, #next-button:active {
+  transform: translateY(-50%) scale(0.95);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
 }
 
 #prev-button {
@@ -191,6 +197,11 @@ button:hover {
   margin: 10px;
   border-top: 1px solid rgba(200, 200, 200, 0.5);
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+  transition: all 0.5s cubic-bezier(0.19, 1, 0.22, 1);
+}
+
+#content:hover {
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
 }
 
 .dark #content {
@@ -236,4 +247,112 @@ button:hover {
 #model-title.active {
   opacity: 1;
   transform: translateY(0);
-} 
+  animation: float 6s ease-in-out infinite;
+}
+
+/* 博客文章样式 */
+#model-blog {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(156, 163, 175, 0.5) transparent;
+  max-height: 220px; /* 调整为更大的固定高度 */
+  transition: max-height 0.3s ease;
+}
+
+#model-blog::-webkit-scrollbar {
+  width: 6px;
+}
+
+#model-blog::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+#model-blog::-webkit-scrollbar-thumb {
+  background-color: rgba(156, 163, 175, 0.5);
+  border-radius: 3px;
+}
+
+.model-article {
+  transform: translateY(0);
+  transition: all 0.3s ease-in-out;
+}
+
+.model-article.hidden {
+  display: none;
+}
+
+.model-article.active {
+  display: block;
+  opacity: 1;
+  transform: translateY(0);
+  animation: fadeInUp 0.5s ease-out;
+}
+
+.model-article:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+/* 增强标签交互感 */
+.model-article .text-xs {
+  transition: all 0.3s ease;
+}
+
+.model-article .text-xs:hover {
+  transform: scale(1.1);
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+/* 增强交互动画 */
+@keyframes pulse {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.05); }
+  100% { transform: scale(1); }
+}
+
+@keyframes float {
+  0% { transform: translateY(0); }
+  50% { transform: translateY(-5px); }
+  100% { transform: translateY(0); }
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* 夜间模式按钮增强 */
+#night-mode-button {
+  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+#night-mode-button:hover {
+  transform: scale(1.15) rotate(15deg);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+}
+
+#night-mode-button:active {
+  transform: scale(0.95);
+}
+
+/* 添加图标动画 */
+.fas {
+  transition: transform 0.3s ease;
+}
+
+#prev-button:hover .fas {
+  transform: translateX(-3px);
+}
+
+#next-button:hover .fas {
+  transform: translateX(3px);
+}
+
+#night-mode-button:hover .fas {
+  animation: pulse 1.5s infinite ease-in-out;
+}

@@ -7,38 +7,6 @@ let currentModelIndex = config.defaultIndex;
 function loadModel(index) {
   const modelInfo = config.models[index];
   
-  // 更新模型列表中的高亮项 - 提前到最开始执行
-  updateModelListHighlight(index);
-  
-  // 更新模型标题
-  const titleElement = document.getElementById('model-title');
-  titleElement.textContent = modelInfo.name;
-
-  // 更新模型版本
-  const versionElement = document.getElementById('model-version');
-  const versionSpan = versionElement.querySelector('span');
-  versionSpan.textContent = modelInfo.version;
-  
-  // 更新版本标签颜色
-  updateVersionColors(index, versionSpan);
-  
-  // 更新模型描述
-  const descriptionElement = document.getElementById('model-description');
-  descriptionElement.textContent = modelInfo.description;
-
-  // 执行标题显示动画
-  titleElement.classList.remove('active');
-  descriptionElement.classList.remove('active');
-  
-  setTimeout(() => {
-    titleElement.classList.add('active');
-    
-    // 直接显示描述信息，不再延迟显示版本
-    setTimeout(() => {
-      descriptionElement.classList.add('active');
-    }, 100);
-  }, 50);
-
   // 更新导航圆点
   const dots = document.querySelectorAll('.model-dot');
   dots.forEach((dot, dotIndex) => {
@@ -48,6 +16,9 @@ function loadModel(index) {
       dot.classList.remove('active');
     }
   });
+
+  // 发布模型变更事件
+  dispatchModelChangedEvent(index, modelInfo);
 
   // 如果场景中已有模型，先移除
   if (currentModel) {
@@ -111,55 +82,20 @@ function loadModel(index) {
   );
 }
 
-// 高亮当前选中的模型列表项
-function updateModelListHighlight(index) {
-  // 获取所有模型列表项
-  const listItems = document.querySelectorAll('#content ul li');
-  
-  // 先隐藏所有列表项
-  listItems.forEach(item => {
-    item.classList.remove('active', 'bg-white/20', 'dark:bg-gray-700/50');
-    // 确保非活动项有偏移效果
-    item.style.transform = 'translateY(-50%) translateY(10px)';
-    item.style.opacity = '0';
+// 创建和发布模型变更事件的函数
+function dispatchModelChangedEvent(index, modelInfo) {
+  console.log('切换模型:', index, modelInfo.name, modelInfo.description); // 添加调试日志
+  const event = new CustomEvent('modelChanged', {
+    detail: {
+      index: index,
+      modelInfo: modelInfo
+    }
   });
-  
-  // 显示当前选中的模型
-  const currentItem = document.getElementById(`model-item-${index}`);
-  if (currentItem) {
-    // 添加延迟使动画更平滑
-    setTimeout(() => {
-      currentItem.classList.add('active', 'bg-white/20', 'dark:bg-gray-700/50');
-      currentItem.style.transform = 'translateY(-50%)';
-      currentItem.style.opacity = '1';
-    }, 100);
-  }
-}
-
-// 更新版本标签的颜色
-function updateVersionColors(index, versionSpan) {
-  // 移除所有颜色相关的类
-  versionSpan.className = 'px-2 py-1 rounded-full';
-  
-  // 根据当前模型添加对应的颜色类
-  switch(index) {
-    case 0: // ChatGPT
-      versionSpan.classList.add('bg-blue-500/20', 'dark:bg-blue-500/30', 'text-blue-600', 'dark:text-blue-300');
-      break;
-    case 1: // Claude
-      versionSpan.classList.add('bg-purple-500/20', 'dark:bg-purple-500/30', 'text-purple-600', 'dark:text-purple-300');
-      break;
-    case 2: // DeepSeek
-      versionSpan.classList.add('bg-green-500/20', 'dark:bg-green-500/30', 'text-green-600', 'dark:text-green-300');
-      break;
-    case 3: // Gemini
-      versionSpan.classList.add('bg-amber-500/20', 'dark:bg-amber-500/30', 'text-amber-600', 'dark:text-amber-300');
-      break;
-    case 4: // Grok
-      versionSpan.classList.add('bg-red-500/20', 'dark:bg-red-500/30', 'text-red-600', 'dark:text-red-300');
-      break;
-  }
+  document.dispatchEvent(event);
 }
 
 // 初始加载
-loadModel(currentModelIndex); 
+document.addEventListener('DOMContentLoaded', () => {
+  console.log('DOM已加载，开始加载模型...');
+  loadModel(currentModelIndex);
+});
