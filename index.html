@@ -25,6 +25,30 @@
       }
     }
   </script>
+  <!-- 添加竞技场标签闪烁动画 -->
+  <style>
+    /* @keyframes pulse-arena {
+      0% { transform: scale(1); opacity: 1; }
+      50% { transform: scale(1.05); opacity: 0.9; }
+      100% { transform: scale(1); opacity: 1; }
+    } */
+    
+    .arena-first-tag {
+      background: linear-gradient(90deg, #ffd700, #ff9d00);
+      color: #8b0000;
+      font-weight: bold;
+      border: 1px solid #ffd700;
+      box-shadow: 0 0 8px rgba(255, 215, 0, 0.6);
+      animation: pulse-arena 2s infinite;
+    }
+    
+    .dark .arena-first-tag {
+      background: linear-gradient(90deg, #ffd700, #ff8c00);
+      color: #1a0000;
+      border: 1px solid #ffd700;
+      box-shadow: 0 0 10px rgba(255, 215, 0, 0.8);
+    }
+  </style>
   <!-- 引入自定义样式 -->
   <link rel="stylesheet" href="js/styles.css">
 </head>
@@ -166,10 +190,11 @@
                 </div>
                 <p class="text-sm dark:text-gray-300">超长上下文，强推理能力，善于多模态分析和复杂信息整合</p>
                 <div class="mt-2 flex items-center">
+                  <span class="text-xs px-2 py-1 rounded-full mr-2 arena-first-tag"><i class="fas fa-trophy mr-1"></i>竞技场第一</span>
                   <span class="text-xs bg-gray-200 dark:bg-gray-700 px-2 py-1 rounded-full mr-2 dark:text-gray-300">长上下文</span>
                   <span class="text-xs bg-gray-200 dark:bg-gray-700 px-2 py-1 rounded-full mr-2 dark:text-gray-300">多模态</span>
                   <span class="text-xs bg-gray-200 dark:bg-gray-700 px-2 py-1 rounded-full mr-2 dark:text-gray-300">智能</span>
-                  <span class="text-xs bg-gray-200 dark:bg-gray-700 px-2 py-1 rounded-full dark:text-gray-300">竞技场第一</span>
+                  
                 </div>
               </article>
 
