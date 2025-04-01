@@ -88,7 +88,8 @@
     <!-- 文字内容区 - 黄金分割比例：下部分占38.2% -->
     <div id="content" class="absolute top-[61.8vh] left-0 w-full h-[38.2vh] flex flex-col justify-center items-center z-20 p-5">
       <div class="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-6xl w-full">
-        <div class="flex flex-col justify-center">
+        <!-- 左侧内容 - 在移动端隐藏 -->
+        <div class="hidden md:flex flex-col justify-center">
           <div class="bg-gray-100 dark:bg-gray-800/30 p-6 rounded-xl backdrop-blur-sm border border-gray-300 dark:border-white/10 shadow-md">
             <h1 class="mb-3 text-3xl font-bold transition-colors duration-500 ease-in-out dark:text-white font-display">
               一句话介绍
@@ -101,7 +102,8 @@
             </p>
           </div>
         </div>
-        <div class="flex flex-col justify-center">
+        <!-- 右侧内容 - 移动端全宽显示 -->
+        <div class="flex flex-col justify-center w-full">
           <div class="bg-gray-100 dark:bg-gray-800/30 p-6 rounded-xl backdrop-blur-sm border border-gray-300 dark:border-white/10 shadow-md overflow-hidden">
             <h2 class="text-xl font-bold mb-4 dark:text-white font-display">前沿模型</h2>
             
@@ -220,7 +222,7 @@
             </div>
             
             <div class="mt-2 text-sm text-gray-600 dark:text-gray-400">
-              <span><i class="fas fa-info-circle mr-1"></i>仅展示当前流行的AI大语言模型</span>
+              <span><i class="fas fa-info-circle mr-1"></i>仅展示当前流行的AI大模型</span>
             </div>
           </div>
         </div>
