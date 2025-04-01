@@ -86,7 +86,7 @@
 
   <!-- 页面结构 -->
   <div id="container" class="absolute inset-0 overflow-hidden">
-    <!-- 模型容器 - 黄金分割比例：上部分占61.8% -->
+    <!-- 模型容器 - 上部分占50% -->
     <div id="model-container" class="absolute top-0 left-0 w-full h-[var(--upper-section)] z-10 bg-gray-100 border-b border-gray-300 dark:bg-transparent dark:border-none"></div>
     
     <!-- 模型标题 -->
@@ -115,8 +115,8 @@
                    shadow-md dark:bg-gray-800/70 dark:text-white hover:bg-white/90 dark:hover:bg-gray-600/90"
     ><i class="fas fa-sun"></i></button>
     
-    <!-- 文字内容区 - 黄金分割比例：下部分占38.2% -->
-    <div id="content" class="absolute top-[61.8vh] left-0 w-full h-[38.2vh] flex flex-col justify-center items-center z-20 px-3 sm:px-5 overflow-hidden">
+    <!-- 文字内容区 - 下部分占可变比例 -->
+    <div id="content" class="absolute top-[var(--divider-position)] left-0 w-full h-[var(--lower-section)] flex flex-col justify-center items-center z-20 px-3 sm:px-5 overflow-hidden">
       <div class="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-6xl w-full">
         <!-- 左侧内容 - 在移动端隐藏 -->
         <div class="hidden md:flex flex-col justify-center">

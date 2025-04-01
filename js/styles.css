@@ -10,9 +10,18 @@
   --dot-size-normal: 14px;
   --dot-size-active: 18px;
   --golden-ratio: 1.618;
-  --upper-section: 61.8vh;
-  --lower-section: 38.2vh;
-  --divider-position: 61.8vh;
+  --upper-section: 50vh;
+  --lower-section: 50vh;
+  --divider-position: 50vh;
+}
+
+/* 响应式设计：桌面端保持黄金分割比例 */
+@media (min-width: 768px) {
+  :root {
+    --upper-section: 61.8vh;
+    --lower-section: 38.2vh;
+    --divider-position: 61.8vh;
+  }
 }
 
 /* 添加分隔线 */
