@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
+  <!-- 圆形黑色背景 -->
+  <circle cx="50" cy="50" r="45" fill="black"/>
+  
+  <!-- 白色嫩芽 - 茎 -->
+  <path d="M50 80 L50 40" stroke="white" stroke-width="3" fill="none"/>
+  
+  <!-- 白色嫩芽 - 叶子 -->
+  <path d="M50 50 Q65 35 50 25" stroke="white" stroke-width="3" fill="none"/>
+  <path d="M50 50 Q35 35 50 25" stroke="white" stroke-width="3" fill="none"/>
+  
+  <!-- 白色嫩芽 - 根部 -->
+  <path d="M45 80 Q40 85 50 85 Q60 85 55 80" fill="white"/>
+</svg>
