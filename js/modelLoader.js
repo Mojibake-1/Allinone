@@ -64,6 +64,13 @@ function loadModel(index) {
 
       newModel.position.x += (newModel.position.x - center.x);
       newModel.position.y += (newModel.position.y - center.y);
+      
+      // 移动端模型位置微调
+      const isMobile = window.innerWidth < 768;
+      if (isMobile) {
+        newModel.position.y -= 0; // 移动端模型稍微下移，配合上移的相机
+      }
+      
       newModel.position.z += (newModel.position.z - center.z);
 
       const maxDim = Math.max(size.x, size.y, size.z);
