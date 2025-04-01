@@ -1,14 +1,14 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
-  <!-- 圆形黑色背景 -->
-  <circle cx="50" cy="50" r="45" fill="black"/>
+  <!-- 圆形黑色背景 - 外切 -->
+  <circle cx="50" cy="50" r="50" fill="black"/>
   
-  <!-- 白色嫩芽 - 茎 -->
-  <path d="M50 80 L50 40" stroke="white" stroke-width="3" fill="none"/>
+  <!-- 白色嫩芽 - 茎（放大但更短） -->
+  <path d="M50 85 L50 50" stroke="white" stroke-width="6" fill="none"/>
   
-  <!-- 白色嫩芽 - 叶子 -->
-  <path d="M50 50 Q65 35 50 25" stroke="white" stroke-width="3" fill="none"/>
-  <path d="M50 50 Q35 35 50 25" stroke="white" stroke-width="3" fill="none"/>
+  <!-- 白色嫩芽 - 叶子（放大） -->
+  <path d="M50 45 Q75 25 50 15" stroke="white" stroke-width="6" fill="none"/>
+  <path d="M50 45 Q25 25 50 15" stroke="white" stroke-width="6" fill="none"/>
   
-  <!-- 白色嫩芽 - 根部 -->
-  <path d="M45 80 Q40 85 50 85 Q60 85 55 80" fill="white"/>
+  <!-- 白色嫩芽 - 根部（放大） -->
+  <path d="M43 85 Q35 92 50 92 Q65 92 57 85" fill="white"/>
 </svg>
