@@ -1,10 +1,10 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
   <!-- 圆润可爱的五角星 -->
   <path
-    d="M50 15 L60 40 L87 40 L65 55 L75 80 L50 65 L25 80 L35 55 L13 40 L40 40 Z"
+    d="M50 10 L63 40 L95 40 L68 58 L80 88 L50 70 L20 88 L32 58 L5 40 L37 40 Z"
     fill="#FFD700"
     stroke="#FF8C00"
-    stroke-width="4"
+    stroke-width="6"
     stroke-linejoin="round"
     stroke-linecap="round"
   />
