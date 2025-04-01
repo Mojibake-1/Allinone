@@ -56,6 +56,26 @@
       height: 100%;
       overflow: hidden;
     }
+    
+    /* 移动端标签样式 */
+    @media (max-width: 640px) {
+      .model-tag {
+        font-size: 0.65rem !important;
+        padding: 0.1rem 0.35rem !important;
+        margin-left: 0.25rem !important;
+        margin-right: 0.25rem !important;
+        white-space: nowrap;
+      }
+      
+      .model-info {
+        font-size: 0.7rem !important;
+        margin-right: 0.5rem !important;
+      }
+      
+      .model-tags-container {
+        gap: 0.25rem;
+      }
+    }
   </style>
   <!-- 引入自定义样式 -->
   <link rel="stylesheet" href="js/styles.css">
@@ -124,19 +144,19 @@
                     <i class="fas fa-robot text-blue-500"></i>
                   </div>
                   <h3 class="font-medium text-lg dark:text-white">ChatGPT</h3>
-                  <span class="ml-2 text-xs px-2 py-1 bg-blue-500/20 dark:bg-blue-500/30 rounded-full text-blue-600 dark:text-blue-300">GPT4o</span>
-                  <span class="ml-2 text-xs px-2 py-1 bg-blue-500/20 dark:bg-blue-500/30 rounded-full text-blue-600 dark:text-blue-300">GPT4.5</span>
-                  <span class="ml-2 text-xs px-2 py-1 bg-blue-500/20 dark:bg-blue-500/30 rounded-full text-blue-600 dark:text-blue-300">o1</span>
+                  <span class="ml-2 text-xs px-2 py-1 bg-blue-500/20 dark:bg-blue-500/30 rounded-full text-blue-600 dark:text-blue-300 model-tag">GPT4o</span>
+                  <span class="ml-2 text-xs px-2 py-1 bg-blue-500/20 dark:bg-blue-500/30 rounded-full text-blue-600 dark:text-blue-300 model-tag">GPT4.5</span>
+                  <span class="ml-2 text-xs px-2 py-1 bg-blue-500/20 dark:bg-blue-500/30 rounded-full text-blue-600 dark:text-blue-300 model-tag">o1</span>
                 </div>
                 <div class="flex flex-wrap justify-between items-center text-sm text-gray-500 dark:text-gray-400 mb-2">
-                  <span class="mr-2"><i class="fas fa-building mr-1"></i> OpenAI</span>
-                  <span><i class="fas fa-calendar-alt mr-1"></i>最新更新: 2025.3</span>
+                  <span class="mr-2 model-info"><i class="fas fa-building mr-1"></i> OpenAI</span>
+                  <span class="model-info"><i class="fas fa-calendar-alt mr-1"></i>最新更新: 2025.3</span>
                 </div>
                 <p class="text-sm dark:text-gray-300">情商在线、知识广博，极大简化图像工作流</p>
-                <div class="mt-2 flex flex-wrap items-center">
-                  <span class="text-xs bg-gray-200 dark:bg-gray-700 px-2 py-1 rounded-full mr-2 dark:text-gray-300">情感智能</span>
-                  <span class="text-xs bg-gray-200 dark:bg-gray-700 px-2 py-1 rounded-full mr-2 dark:text-gray-300">通用型</span>
-                  <span class="text-xs bg-gray-200 dark:bg-gray-700 px-2 py-1 rounded-full dark:text-gray-300">图像生成</span>
+                <div class="mt-2 flex flex-wrap items-center model-tags-container">
+                  <span class="text-xs bg-gray-200 dark:bg-gray-700 px-2 py-1 rounded-full mr-2 dark:text-gray-300 model-tag">情感智能</span>
+                  <span class="text-xs bg-gray-200 dark:bg-gray-700 px-2 py-1 rounded-full mr-2 dark:text-gray-300 model-tag">通用型</span>
+                  <span class="text-xs bg-gray-200 dark:bg-gray-700 px-2 py-1 rounded-full dark:text-gray-300 model-tag">图像生成</span>
                 </div>
               </article>
 
@@ -147,17 +167,17 @@
                     <i class="fas fa-robot text-purple-500"></i>
                   </div>
                   <h3 class="font-medium text-lg dark:text-white">Claude</h3>
-                  <span class="ml-2 text-xs px-2 py-1 bg-purple-500/20 dark:bg-purple-500/30 rounded-full text-purple-600 dark:text-purple-300">Sonnet 3.7</span>
+                  <span class="ml-2 text-xs px-2 py-1 bg-purple-500/20 dark:bg-purple-500/30 rounded-full text-purple-600 dark:text-purple-300 model-tag">Sonnet 3.7</span>
                 </div>
                 <div class="flex flex-wrap justify-between items-center text-sm text-gray-500 dark:text-gray-400 mb-2">
-                  <span class="mr-2"><i class="fas fa-building mr-1"></i>Anthropic</span>
-                  <span><i class="fas fa-calendar-alt mr-1"></i>最新更新: 2025.2</span>
+                  <span class="mr-2 model-info"><i class="fas fa-building mr-1"></i>Anthropic</span>
+                  <span class="model-info"><i class="fas fa-calendar-alt mr-1"></i>最新更新: 2025.2</span>
                 </div>
                 <p class="text-sm dark:text-gray-300">在编程、审美和稳定性上最可靠， MCP 、Agent 实战利器</p>
-                <div class="mt-2 flex flex-wrap items-center">
-                  <span class="text-xs bg-gray-200 dark:bg-gray-700 px-2 py-1 rounded-full mr-2 dark:text-gray-300">前端</span>
-                  <span class="text-xs bg-gray-200 dark:bg-gray-700 px-2 py-1 rounded-full mr-2 dark:text-gray-300">编程</span>
-                  <span class="text-xs bg-gray-200 dark:bg-gray-700 px-2 py-1 rounded-full dark:text-gray-300">指令遵循</span>
+                <div class="mt-2 flex flex-wrap items-center model-tags-container">
+                  <span class="text-xs bg-gray-200 dark:bg-gray-700 px-2 py-1 rounded-full mr-2 dark:text-gray-300 model-tag">前端</span>
+                  <span class="text-xs bg-gray-200 dark:bg-gray-700 px-2 py-1 rounded-full mr-2 dark:text-gray-300 model-tag">编程</span>
+                  <span class="text-xs bg-gray-200 dark:bg-gray-700 px-2 py-1 rounded-full dark:text-gray-300 model-tag">指令遵循</span>
                 </div>
               </article>
 
@@ -168,19 +188,19 @@
                     <i class="fas fa-robot text-green-500"></i>
                   </div>
                   <h3 class="font-medium text-lg dark:text-white">DeepSeek</h3>
-                  <span class="ml-2 text-xs px-2 py-1 bg-green-500/20 dark:bg-green-500/30 rounded-full text-green-600 dark:text-green-300">V3</span>
-                  <span class="ml-2 text-xs px-2 py-1 bg-green-500/20 dark:bg-green-500/30 rounded-full text-green-600 dark:text-green-300">R1</span>
+                  <span class="ml-2 text-xs px-2 py-1 bg-green-500/20 dark:bg-green-500/30 rounded-full text-green-600 dark:text-green-300 model-tag">V3</span>
+                  <span class="ml-2 text-xs px-2 py-1 bg-green-500/20 dark:bg-green-500/30 rounded-full text-green-600 dark:text-green-300 model-tag">R1</span>
                 </div>
                 <div class="flex flex-wrap justify-between items-center text-sm text-gray-500 dark:text-gray-400 mb-2">
-                  <span class="mr-2"><i class="fas fa-building mr-1"></i>深度求索</span>
-                  <span><i class="fas fa-calendar-alt mr-1"></i>最新更新: 2025.3</span>
+                  <span class="mr-2 model-info"><i class="fas fa-building mr-1"></i>深度求索</span>
+                  <span class="model-info"><i class="fas fa-calendar-alt mr-1"></i>最新更新: 2025.3</span>
                 </div>
                 <p class="text-sm dark:text-gray-300">开源亲民选手，低成本高性能，正快速逼近顶级梯队</p>
-                <div class="mt-2 flex flex-wrap items-center">
-                  <span class="text-xs bg-gray-200 dark:bg-gray-700 px-2 py-1 rounded-full mr-2 dark:text-gray-300">开源</span>
-                  <span class="text-xs bg-gray-200 dark:bg-gray-700 px-2 py-1 rounded-full mr-2 dark:text-gray-300">经济</span>
-                  <span class="text-xs bg-gray-200 dark:bg-gray-700 px-2 py-1 rounded-full mr-2 dark:text-gray-300">联网搜索</span>
-                  <span class="text-xs bg-gray-200 dark:bg-gray-700 px-2 py-1 rounded-full dark:text-gray-300">中文优化</span>
+                <div class="mt-2 flex flex-wrap items-center model-tags-container">
+                  <span class="text-xs bg-gray-200 dark:bg-gray-700 px-2 py-1 rounded-full mr-2 dark:text-gray-300 model-tag">开源</span>
+                  <span class="text-xs bg-gray-200 dark:bg-gray-700 px-2 py-1 rounded-full mr-2 dark:text-gray-300 model-tag">经济</span>
+                  <span class="text-xs bg-gray-200 dark:bg-gray-700 px-2 py-1 rounded-full mr-2 dark:text-gray-300 model-tag">联网搜索</span>
+                  <span class="text-xs bg-gray-200 dark:bg-gray-700 px-2 py-1 rounded-full dark:text-gray-300 model-tag">中文优化</span>
                 </div>
               </article>
 
