@@ -79,3 +79,49 @@ style.textContent = `
   }
 `;
 document.head.appendChild(style);
+
+// --- 公告栏逻辑 ---
+document.addEventListener('DOMContentLoaded', () => {
+  const banner = document.getElementById('announcement-banner');
+  const backdrop = document.getElementById('announcement-backdrop');
+  const closeButton = document.getElementById('close-banner-button');
+  const dontShowCheckbox = document.getElementById('dont-show-today-checkbox'); // 获取复选框元素
+
+  // 获取今天的日期字符串 YYYY-MM-DD
+  const today = new Date().toISOString().split('T')[0];
+
+  if (banner && backdrop && closeButton && dontShowCheckbox) {
+    // 检查是否今天已经被标记为不再显示
+    const dismissedDate = localStorage.getItem('announcementDismissedDate');
+
+    if (dismissedDate !== today) {
+      // 如果今天没有被标记 或 标记的是过去的日期，则显示公告
+      banner.classList.remove('hidden');
+      backdrop.classList.remove('hidden');
+      requestAnimationFrame(() => {
+          requestAnimationFrame(() => {
+              banner.classList.remove('opacity-0', 'scale-95');
+              backdrop.classList.remove('opacity-0');
+          });
+      });
+    } // 如果 dismissedDate === today，则默认保持 hidden，不执行显示逻辑
+
+    closeButton.addEventListener('click', () => {
+      // 检查复选框是否被选中
+      if (dontShowCheckbox.checked) {
+        // 如果选中，则记录今天的日期
+        localStorage.setItem('announcementDismissedDate', today);
+      }
+
+      // 添加退出动画类
+      banner.classList.add('opacity-0', 'scale-95');
+      backdrop.classList.add('opacity-0');
+      
+      // 等待动画结束后再添加 hidden 类
+      setTimeout(() => {
+          banner.classList.add('hidden');
+          backdrop.classList.add('hidden');
+      }, 300); // 这里的延迟应与CSS transition duration一致
+    });
+  }
+});

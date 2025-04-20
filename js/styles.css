@@ -46,6 +46,9 @@ body::after {
   transform: translateY(-5px);
   transition: opacity var(--transition-speed) var(--transition-timing),
               transform var(--transition-speed) var(--transition-timing);
+  text-shadow: 0 0 8px rgba(255, 255, 255, 0.5),
+               0 0 12px rgba(255, 255, 255, 0.353);
+  padding: 0.5rem 0;
 }
 
 #model-title.active, #model-version.active {
@@ -244,15 +247,6 @@ button:hover {
 }
 
 /* 模型标题动画效果 */
-#model-title {
-  opacity: 0;
-  transform: translateY(-5px);
-  transition: opacity var(--transition-speed) var(--transition-timing),
-              transform var(--transition-speed) var(--transition-timing);
-  padding: 0.5rem 0;
-  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
-}
-
 #model-title.active {
   opacity: 1;
   transform: translateY(0);
