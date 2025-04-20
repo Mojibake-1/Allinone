@@ -160,7 +160,7 @@ async function loadModel(index) {
 
 // 创建和发布模型变更事件的函数
 function dispatchModelChangedEvent(index, modelInfo) {
-  console.log('切换模型:', index, modelInfo.name, modelInfo.description); // 添加调试日志
+  // console.log('切换模型:', index, modelInfo.name); // 如果需要详细日志可以取消注释
   const event = new CustomEvent('modelChanged', {
     detail: {
       index: index,
@@ -170,29 +170,36 @@ function dispatchModelChangedEvent(index, modelInfo) {
   document.dispatchEvent(event);
 }
 
-// 新增：后台预加载函数
-function startBackgroundPreloading() {
-  console.log("开始后台预加载...");
-  config.models.forEach((modelInfo, i) => {
+// 修改：后台预加载函数，改为顺序执行
+async function startBackgroundPreloading() { // 添加 async
+  console.log("开始后台顺序预加载...");
+  // 使用 for...of 循环配合 await 来实现顺序加载
+  for (const [i, modelInfo] of config.models.entries()) {
     // 跳过当前已经加载或正在加载的第一个模型
     if (i === currentModelIndex) {
       console.log(`跳过预加载当前模型: ${modelInfo.file}`);
-      return;
+      continue; // 跳到下一个循环
     }
-    // 如果模型尚未开始加载（即不在 cache map 中），则启动加载
+    // 如果模型尚未开始加载（即不在 cache map 中），则启动加载并等待其完成
     if (!modelCacheMap[modelInfo.file]) {
-      console.log(`启动预加载: ${modelInfo.file}`);
-      fetchAndProcessModel(modelInfo).catch(error => {
-        // 预加载失败时记录错误，但不中断其他操作
-        console.error(`预加载模型 ${modelInfo.file} 失败:`, error);
-      });
+      try {
+        console.log(`启动顺序预加载: ${modelInfo.file}`);
+        await fetchAndProcessModel(modelInfo); // 等待当前模型加载处理完成
+        console.log(`完成顺序预加载: ${modelInfo.file}`);
+      } catch (error) {
+        // 预加载失败时记录错误，然后继续加载下一个
+        console.error(`顺序预加载模型 ${modelInfo.file} 失败:`, error);
+      }
     } else {
-        console.log(`模型已在加载或已缓存，跳过预加载: ${modelInfo.file}`);
+      console.log(`模型已在加载或已缓存，跳过顺序预加载: ${modelInfo.file}`);
     }
-  });
+    // 可选：在每个模型加载后稍微暂停一下，给主线程更多喘息时间
+    // await new Promise(resolve => setTimeout(resolve, 100)); // 暂停 100ms
+  }
+  console.log("后台顺序预加载完成。");
 }
 
-// 修改：DOMContentLoaded 监听器
+// 修改：DOMContentLoaded 监听器 (基本不变，确保调用的是 async 函数)
 document.addEventListener('DOMContentLoaded', () => {
   console.log('DOM已加载，开始加载初始模型...');
   // 立即加载并显示第一个模型
@@ -200,11 +207,12 @@ document.addEventListener('DOMContentLoaded', () => {
     .then(() => {
       console.log("初始模型加载完成。");
       // 在初始模型成功显示后，稍作延迟，开始后台预加载其余模型
-      setTimeout(startBackgroundPreloading, 1000); // 延迟1秒启动预加载
+      // 注意：这里调用 startBackgroundPreloading 不需要 await，让它在后台执行即可
+      setTimeout(startBackgroundPreloading, 1500); // 稍微增加延迟，给初始渲染更多时间
     })
     .catch(error => {
       console.error("初始模型加载失败:", error);
       // 即使初始模型加载失败，也尝试预加载其他的
-      setTimeout(startBackgroundPreloading, 1000); 
+      setTimeout(startBackgroundPreloading, 1500); 
     });
 });
