@@ -349,5 +349,36 @@
   <script src="js/contentDisplay.js"></script>
   <script src="js/ui.js"></script>
   <script src="js/main.js"></script>
+  <script src="js/ui.js"></script>
+  <script src="js/main.js"></script>
+
+  <script>
+    document.addEventListener('keydown', function(event) {
+      // 获取按钮元素
+      const prevBtn = document.getElementById('prev-button');
+      const nextBtn = document.getElementById('next-button');
+
+      // 检查按钮是否存在，防止报错
+      if (!prevBtn || !nextBtn) return;
+
+      switch (event.key) {
+        case 'ArrowLeft': // 监听左方向键
+          // 模拟点击"上一页"按钮
+          prevBtn.click();
+          // 可选：给按钮添加按下的视觉反馈（如果有hover样式的话）
+          prevBtn.classList.add('active');
+          setTimeout(() => prevBtn.classList.remove('active'), 150);
+          break;
+          
+        case 'ArrowRight': // 监听右方向键
+          // 模拟点击"下一页"按钮
+          nextBtn.click();
+          // 可选：视觉反馈
+          nextBtn.classList.add('active');
+          setTimeout(() => nextBtn.classList.remove('active'), 150);
+          break;
+      }
+    });
+  </script>
 </body>
 </html>
